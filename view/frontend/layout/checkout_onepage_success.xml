@@ -7,5 +7,6 @@
             </block>
             <block class="Magento\Customer\Block\Form\Register" name="checkout.registration" template="Magento_Customer::form/register.phtml" cacheable="false"/>
         </referenceContainer>
+        <referenceBlock name="captcha" remove="true"/>
     </body>
 </page>

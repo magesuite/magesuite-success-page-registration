@@ -3,4 +3,8 @@
     <type name="Magento\Customer\Block\Form\Register">
         <plugin name="magesuite_registration_email" type="MageSuite\SuccessPageRegistration\Plugin\Customer\Block\Form\AddUserDataToRegisterForm" sortOrder="1" disabled="false"/>
     </type>
+
+    <type name="Magento\Captcha\Observer\CheckUserCreateObserver">
+        <plugin name="check_if_captcha_required" type="MageSuite\SuccessPageRegistration\Plugin\Captcha\Observer\CheckUserCreateObserver\ValidateForm"/>
+    </type>
 </config>
