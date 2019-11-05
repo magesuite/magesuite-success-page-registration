@@ -7,4 +7,8 @@
     <type name="Magento\Captcha\Observer\CheckUserCreateObserver">
         <plugin name="check_if_captcha_required" type="MageSuite\SuccessPageRegistration\Plugin\Captcha\Observer\CheckUserCreateObserver\ValidateForm"/>
     </type>
+
+    <type name="MSP\ReCaptcha\Model\Validate">
+        <plugin name="validate_recaptcha_success_page" type="MageSuite\SuccessPageRegistration\Plugin\MSP\ReCaptcha\Model\Validate\ValidateReCaptcha"/>
+    </type>
 </config>
