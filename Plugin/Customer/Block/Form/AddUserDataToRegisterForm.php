@@ -66,7 +66,7 @@ class AddUserDataToRegisterForm
 
         $email = $lastOrderData->getCustomerEmail();
 
-        $address = $this->orderAddressRepository->get($lastOrderData->getShippingAddressId());
+        $address = $this->orderAddressRepository->get($lastOrderData->getBillingAddressId());
 
         $subject->getData('form_data')->setEmail($email);
         $subject->getData('form_data')->setFirstname($address->getFirstname());
