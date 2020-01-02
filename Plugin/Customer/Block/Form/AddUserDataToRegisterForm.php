@@ -4,6 +4,8 @@ namespace MageSuite\SuccessPageRegistration\Plugin\Customer\Block\Form;
 
 class AddUserDataToRegisterForm
 {
+    protected const CONFIG_PATH_SOURCE_ADDRESS = 'customer/create_account/source_address';
+
     /**
      * @var \Magento\Checkout\Model\Session
      */
@@ -35,6 +37,11 @@ class AddUserDataToRegisterForm
     protected $customerExtractor;
 
     /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
      * @param \Magento\Checkout\Model\Session $checkoutSession
      */
     public function __construct(
@@ -43,7 +50,8 @@ class AddUserDataToRegisterForm
         \Magento\Framework\App\Request\Http $request,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Customer\Model\Session\Proxy $sessionProxy,
-        \Magento\Sales\Model\Order\OrderCustomerExtractor $customerExtractor
+        \Magento\Sales\Model\Order\OrderCustomerExtractor $customerExtractor,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     )
     {
         $this->checkoutSession = $checkoutSession;
@@ -52,6 +60,7 @@ class AddUserDataToRegisterForm
         $this->customerSession = $customerSession;
         $this->sessionProxy = $sessionProxy;
         $this->customerExtractor = $customerExtractor;
+        $this->scopeConfig = $scopeConfig;
     }
 
     public function afterGetFormData(\Magento\Customer\Block\Form\Register $subject, $result)
@@ -66,7 +75,11 @@ class AddUserDataToRegisterForm
 
         $email = $lastOrderData->getCustomerEmail();
 
-        $address = $this->orderAddressRepository->get($lastOrderData->getBillingAddressId());
+        if($this->scopeConfig->getValue(self::CONFIG_PATH_SOURCE_ADDRESS) == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING) {
+            $address = $this->orderAddressRepository->get($lastOrderData->getBillingAddressId());
+        } else {
+            $address = $this->orderAddressRepository->get($lastOrderData->getShippingAddressId());
+        }
 
         $subject->getData('form_data')->setEmail($email);
         $subject->getData('form_data')->setFirstname($address->getFirstname());
