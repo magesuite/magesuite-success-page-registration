@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="customer">
+            <resource>MageSuite_SuccessPageRegistration::configuration</resource>
+            <group id="create_account" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="source_address" translate="label, comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Source address</label>
+                    <source_model>MageSuite\SuccessPageRegistration\Model\Config\Source\AddressType</source_model>
+                    <comment><![CDATA[Customer name from this address will be taken to create customer.<br/>When using store pickup - it is recommended to use Billing address.]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

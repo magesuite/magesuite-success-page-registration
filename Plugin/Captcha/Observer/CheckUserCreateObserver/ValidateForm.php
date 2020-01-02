@@ -10,8 +10,7 @@ class ValidateForm
 
     public function __construct(
         \Magento\Framework\App\Response\RedirectInterface $redirect
-    )
-    {
+    ) {
         $this->redirect = $redirect;
     }
 

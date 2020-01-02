@@ -35,6 +35,11 @@ class AddUserDataToRegisterForm
     protected $customerExtractor;
 
     /**
+     * @var \MageSuite\SuccessPageRegistration\Helper\Configuration
+     */
+    protected $configurationHelper;
+
+    /**
      * @param \Magento\Checkout\Model\Session $checkoutSession
      */
     public function __construct(
@@ -43,15 +48,16 @@ class AddUserDataToRegisterForm
         \Magento\Framework\App\Request\Http $request,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Customer\Model\Session\Proxy $sessionProxy,
-        \Magento\Sales\Model\Order\OrderCustomerExtractor $customerExtractor
-    )
-    {
+        \Magento\Sales\Model\Order\OrderCustomerExtractor $customerExtractor,
+        \MageSuite\SuccessPageRegistration\Helper\Configuration $configurationHelper
+    ) {
         $this->checkoutSession = $checkoutSession;
         $this->orderAddressRepository = $orderAddressRepository;
         $this->request = $request;
         $this->customerSession = $customerSession;
         $this->sessionProxy = $sessionProxy;
         $this->customerExtractor = $customerExtractor;
+        $this->configurationHelper = $configurationHelper;
     }
 
     public function afterGetFormData(\Magento\Customer\Block\Form\Register $subject, $result)
@@ -66,7 +72,12 @@ class AddUserDataToRegisterForm
 
         $email = $lastOrderData->getCustomerEmail();
 
-        $address = $this->orderAddressRepository->get($lastOrderData->getShippingAddressId());
+        $addressType = $this->configurationHelper->getAddressType();
+        if ($addressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING) {
+            $address = $this->orderAddressRepository->get($lastOrderData->getBillingAddressId());
+        } else {
+            $address = $this->orderAddressRepository->get($lastOrderData->getShippingAddressId());
+        }
 
         $subject->getData('form_data')->setEmail($email);
         $subject->getData('form_data')->setFirstname($address->getFirstname());
@@ -100,5 +111,4 @@ class AddUserDataToRegisterForm
 
         return $result;
     }
-
 }
