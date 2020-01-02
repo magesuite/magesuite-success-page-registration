@@ -4,8 +4,6 @@ namespace MageSuite\SuccessPageRegistration\Plugin\Customer\Block\Form;
 
 class AddUserDataToRegisterForm
 {
-    protected const CONFIG_PATH_SOURCE_ADDRESS = 'customer/create_account/source_address';
-
     /**
      * @var \Magento\Checkout\Model\Session
      */
@@ -37,7 +35,7 @@ class AddUserDataToRegisterForm
     protected $customerExtractor;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var \MageSuite\SuccessPageRegistration\Helper\Configuration
      */
     protected $configurationHelper;
 
@@ -74,8 +72,8 @@ class AddUserDataToRegisterForm
 
         $email = $lastOrderData->getCustomerEmail();
 
-        $sourceAddressType = $this->configurationHelper->getAddressType();
-        if ($sourceAddressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING) {
+        $addressType = $this->configurationHelper->getAddressType();
+        if ($addressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING) {
             $address = $this->orderAddressRepository->get($lastOrderData->getBillingAddressId());
         } else {
             $address = $this->orderAddressRepository->get($lastOrderData->getShippingAddressId());
