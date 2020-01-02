@@ -3,7 +3,7 @@
     <default>
         <customer>
             <create_account>
-                <source_address>billing</source_address>
+                <source_address>shipping</source_address>
             </create_account>
         </customer>
     </default>
