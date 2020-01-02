@@ -39,7 +39,7 @@ class AddUserDataToRegisterForm
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
-    protected $scopeConfig;
+    protected $configurationHelper;
 
     /**
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -51,16 +51,15 @@ class AddUserDataToRegisterForm
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Customer\Model\Session\Proxy $sessionProxy,
         \Magento\Sales\Model\Order\OrderCustomerExtractor $customerExtractor,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-    )
-    {
+        \MageSuite\SuccessPageRegistration\Helper\Configuration $configurationHelper
+    ) {
         $this->checkoutSession = $checkoutSession;
         $this->orderAddressRepository = $orderAddressRepository;
         $this->request = $request;
         $this->customerSession = $customerSession;
         $this->sessionProxy = $sessionProxy;
         $this->customerExtractor = $customerExtractor;
-        $this->scopeConfig = $scopeConfig;
+        $this->configurationHelper = $configurationHelper;
     }
 
     public function afterGetFormData(\Magento\Customer\Block\Form\Register $subject, $result)
@@ -75,7 +74,8 @@ class AddUserDataToRegisterForm
 
         $email = $lastOrderData->getCustomerEmail();
 
-        if($this->scopeConfig->getValue(self::CONFIG_PATH_SOURCE_ADDRESS) == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING) {
+        $sourceAddressType = $this->configurationHelper->getAddressType();
+        if ($sourceAddressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING) {
             $address = $this->orderAddressRepository->get($lastOrderData->getBillingAddressId());
         } else {
             $address = $this->orderAddressRepository->get($lastOrderData->getShippingAddressId());
@@ -113,5 +113,4 @@ class AddUserDataToRegisterForm
 
         return $result;
     }
-
 }
