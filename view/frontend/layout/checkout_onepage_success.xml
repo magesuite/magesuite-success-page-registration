@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Customer\Block\Form\Register" name="checkout.registration" template="Magento_Customer::form/register.phtml" cacheable="false"/>
+            <block class="MageSuite\SuccessPageRegistration\Block\Customer\Form\Register" name="checkout.registration" template="Magento_Customer::form/register.phtml" cacheable="false"/>
         </referenceContainer>
         <referenceBlock name="captcha" remove="true"/>
     </body>
