@@ -52,15 +52,21 @@ class Register extends \Magento\Customer\Block\Form\Register
     {
         if(!$this->_customerSession->isLoggedIn()) {
             $email = $this->checkoutSession->getLastRealOrder()->getCustomerEmail();
-            $websiteId = $this->_storeManager->getStore()->getWebsiteId();
-
-            $customer = $this->customerModelFactory->create();
-            $customer->setWebsiteId($websiteId)->loadByEmail($email);
-            if ($customer->getId()) {
+            if ($this->customerExists($email)) {
                 return '';
             }
         }
 
         return parent::_toHtml();
+    }
+
+    protected function customerExists($email)
+    {
+        $websiteId = $this->_storeManager->getStore()->getWebsiteId();
+
+        $customer = $this->customerModelFactory->create();
+        $customer->setWebsiteId($websiteId)->loadByEmail($email);
+
+        return $customer->getId() ? true : false;
     }
 }
