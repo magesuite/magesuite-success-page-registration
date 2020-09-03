@@ -26,9 +26,7 @@ class Register extends \Magento\Customer\Block\Form\Register
         \Magento\Customer\Model\Url $customerUrl,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Customer\Model\CustomerFactory $customerModelFactory,
-        array $data = [],
-        \Magento\Newsletter\Model\Config $newsLetterConfig = null
-
+        array $data = []
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->customerModelFactory = $customerModelFactory;
@@ -43,8 +41,7 @@ class Register extends \Magento\Customer\Block\Form\Register
             $moduleManager,
             $customerSession,
             $customerUrl,
-            $data,
-            $newsLetterConfig
+            $data
         );
     }
 
