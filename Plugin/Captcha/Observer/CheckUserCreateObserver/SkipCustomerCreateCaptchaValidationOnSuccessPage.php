@@ -1,16 +1,15 @@
 <?php
 namespace MageSuite\SuccessPageRegistration\Plugin\Captcha\Observer\CheckUserCreateObserver;
 
-class ValidateForm
+class SkipCustomerCreateCaptchaValidationOnSuccessPage
 {
     /**
      * @var \Magento\Framework\App\Response\RedirectInterface
      */
     protected $redirect;
 
-    public function __construct(
-        \Magento\Framework\App\Response\RedirectInterface $redirect
-    ) {
+    public function __construct(\Magento\Framework\App\Response\RedirectInterface $redirect)
+    {
         $this->redirect = $redirect;
     }
 

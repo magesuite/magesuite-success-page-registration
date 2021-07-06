@@ -2,16 +2,15 @@
 
 namespace MageSuite\SuccessPageRegistration\Plugin\ReCaptchaCustomer\Observer\CreateCustomerObserver;
 
-class ValidateForm
+class SkipCustomerCreateInvisibleReCaptchaValidationOnSuccessPage
 {
     /**
      * @var \Magento\Framework\App\Response\RedirectInterface
      */
     protected $redirect;
 
-    public function __construct(
-        \Magento\Framework\App\Response\RedirectInterface $redirect
-    ) {
+    public function __construct(\Magento\Framework\App\Response\RedirectInterface $redirect)
+    {
         $this->redirect = $redirect;
     }
 

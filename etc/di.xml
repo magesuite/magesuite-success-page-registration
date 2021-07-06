@@ -5,7 +5,7 @@
     </type>
 
     <type name="Magento\Captcha\Observer\CheckUserCreateObserver">
-        <plugin name="check_if_captcha_required" type="MageSuite\SuccessPageRegistration\Plugin\Captcha\Observer\CheckUserCreateObserver\ValidateForm"/>
+        <plugin name="skip_customer_create_captcha_validation_on_success_page" type="MageSuite\SuccessPageRegistration\Plugin\Captcha\Observer\CheckUserCreateObserver\SkipCustomerCreateCaptchaValidationOnSuccessPage"/>
     </type>
 
     <type name="MSP\ReCaptcha\Model\Validate">
@@ -13,6 +13,6 @@
     </type>
 
     <type name="Magento\ReCaptchaCustomer\Observer\CreateCustomerObserver">
-        <plugin name="check_if_recaptcha_required" type="\MageSuite\SuccessPageRegistration\Plugin\ReCaptchaCustomer\Observer\CreateCustomerObserver\ValidateForm"/>
+        <plugin name="skip_customer_create_invisible_re_captcha_validation_on_success_page" type="\MageSuite\SuccessPageRegistration\Plugin\ReCaptchaCustomer\Observer\CreateCustomerObserver\SkipCustomerCreateInvisibleReCaptchaValidationOnSuccessPage"/>
     </type>
 </config>
