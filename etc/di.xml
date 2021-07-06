@@ -11,4 +11,8 @@
     <type name="MSP\ReCaptcha\Model\Validate">
         <plugin name="validate_recaptcha_success_page" type="MageSuite\SuccessPageRegistration\Plugin\MSP\ReCaptcha\Model\Validate\ValidateReCaptcha"/>
     </type>
+
+    <type name="Magento\ReCaptchaCustomer\Observer\CreateCustomerObserver">
+        <plugin name="check_if_recaptcha_required" type="\MageSuite\SuccessPageRegistration\Plugin\ReCaptchaCustomer\Observer\CreateCustomerObserver\ValidateForm"/>
+    </type>
 </config>
