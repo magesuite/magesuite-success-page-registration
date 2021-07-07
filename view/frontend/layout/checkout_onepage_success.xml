@@ -7,9 +7,10 @@
                     <block class="Magento\ReCaptchaUi\Block\ReCaptcha"
                            name="recaptcha"
                            after="-"
-                           template="Magento_ReCaptchaFrontendUi::recaptcha.phtml"
+                           template="MageSuite_ExtendedRecaptcha::recaptcha.phtml"
                            ifconfig="recaptcha_frontend/type_for/customer_create">
                         <arguments>
+                            <argument name="view_model" xsi:type="object">MageSuite\ExtendedRecaptcha\ViewModel\ReCaptcha</argument>
                             <argument name="recaptcha_for" xsi:type="string">customer_create</argument>
                             <argument name="jsLayout" xsi:type="array">
                                 <item name="components" xsi:type="array">
