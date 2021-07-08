@@ -2,8 +2,27 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="MageSuite\SuccessPageRegistration\Block\Customer\Form\Register" name="checkout.registration" template="Magento_Customer::form/register.phtml" cacheable="false"/>
+            <block class="MageSuite\SuccessPageRegistration\Block\Customer\Form\Register" name="checkout.registration" template="Magento_Customer::form/register.phtml" cacheable="false">
+                <container name="form_additional_info">
+                    <block class="Magento\ReCaptchaUi\Block\ReCaptcha"
+                           name="recaptcha"
+                           after="-"
+                           template="MageSuite_ExtendedRecaptcha::recaptcha.phtml"
+                           ifconfig="recaptcha_frontend/type_for/customer_create">
+                        <arguments>
+                            <argument name="view_model" xsi:type="object">MageSuite\ExtendedRecaptcha\ViewModel\ReCaptcha</argument>
+                            <argument name="recaptcha_for" xsi:type="string">customer_create</argument>
+                            <argument name="jsLayout" xsi:type="array">
+                                <item name="components" xsi:type="array">
+                                    <item name="recaptcha" xsi:type="array">
+                                        <item name="component" xsi:type="string">Magento_ReCaptchaFrontendUi/js/reCaptcha</item>
+                                    </item>
+                                </item>
+                            </argument>
+                        </arguments>
+                    </block>
+                </container>
+            </block>
         </referenceContainer>
-        <referenceBlock name="captcha" remove="true"/>
     </body>
 </page>
