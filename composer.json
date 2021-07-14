@@ -4,7 +4,9 @@
   "type": "magento2-module",
   "homepage": "https://creativestyle.de",
   "license": "OSL-3.0",
-  "require": {},
+  "require": {
+      "creativestyle/magesuite-extended-recaptcha": "^1.0.0"
+  },
   "autoload": {
     "files": [
       "registration.php"
