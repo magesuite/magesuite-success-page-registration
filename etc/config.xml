@@ -6,5 +6,10 @@
                 <source_address>shipping</source_address>
             </create_account>
         </customer>
+        <success_page>
+            <registration_form>
+                <enabled>1</enabled>
+            </registration_form>
+        </success_page>
     </default>
 </config>
