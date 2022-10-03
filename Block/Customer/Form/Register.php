@@ -29,9 +29,17 @@ class Register extends \Magento\Customer\Block\Form\Register
         array $data = [],
         \Magento\Newsletter\Model\Config $newsLetterConfig = null
 
-    ) {
+    )
+    {
         $this->checkoutSession = $checkoutSession;
         $this->customerModelFactory = $customerModelFactory;
+
+        // Compatibility with Magento >= 2.4.5,
+        // For improved maintainability I don't want to introduce breaking compatibility version just for that ViewModel
+        if (class_exists('Magento\Customer\ViewModel\CreateAccountButton')) {
+            $data['create_account_button_view_model'] = \Magento\Framework\App\ObjectManager::getInstance()
+                ->create('Magento\Customer\ViewModel\CreateAccountButton');
+        }
 
         parent::__construct(
             $context,
@@ -50,7 +58,7 @@ class Register extends \Magento\Customer\Block\Form\Register
 
     protected function _toHtml()
     {
-        if(!$this->_customerSession->isLoggedIn()) {
+        if (!$this->_customerSession->isLoggedIn()) {
             $email = $this->checkoutSession->getLastRealOrder()->getCustomerEmail();
             if ($this->customerExists($email)) {
                 return '';
