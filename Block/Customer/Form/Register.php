@@ -28,19 +28,18 @@ class Register extends \Magento\Customer\Block\Form\Register
         \Magento\Customer\Model\CustomerFactory $customerModelFactory,
         array $data = [],
         \Magento\Newsletter\Model\Config $newsLetterConfig = null
-
-    )
-    {
+    ) {
         $this->checkoutSession = $checkoutSession;
         $this->customerModelFactory = $customerModelFactory;
 
         // Compatibility with Magento >= 2.4.5,
         // For improved maintainability I don't want to introduce breaking compatibility version just for that ViewModel
+        //phpcs:disable
         if (class_exists('Magento\Customer\ViewModel\CreateAccountButton')) {
             $data['create_account_button_view_model'] = \Magento\Framework\App\ObjectManager::getInstance()
                 ->create('Magento\Customer\ViewModel\CreateAccountButton');
         }
-
+        //phpcs:enable
         parent::__construct(
             $context,
             $directoryHelper,
@@ -68,13 +67,17 @@ class Register extends \Magento\Customer\Block\Form\Register
         return parent::_toHtml();
     }
 
-    protected function customerExists($email)
+    protected function customerExists($email): bool
     {
         $websiteId = $this->_storeManager->getStore()->getWebsiteId();
-
         $customer = $this->customerModelFactory->create();
         $customer->setWebsiteId($websiteId)->loadByEmail($email);
 
-        return $customer->getId() ? true : false;
+        return $customer->getId() > 0;
+    }
+
+    public function getSuccessUrl(): string
+    {
+        return $this->_customerUrl->getAccountUrl();
     }
 }

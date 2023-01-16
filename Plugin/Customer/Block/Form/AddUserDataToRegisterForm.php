@@ -1,69 +1,45 @@
 <?php
+declare(strict_types=1);
 
 namespace MageSuite\SuccessPageRegistration\Plugin\Customer\Block\Form;
 
 class AddUserDataToRegisterForm
 {
-    /**
-     * @var \Magento\Checkout\Model\Session
-     */
-    protected $checkoutSession;
+    protected \Magento\Checkout\Model\Session $checkoutSession;
 
-    /**
-     * @var \Magento\Sales\Api\OrderAddressRepositoryInterface $orderAddressRepository
-     */
-    protected $orderAddressRepository;
+    protected \Magento\Sales\Api\OrderAddressRepositoryInterface $orderAddressRepository;
 
-    /**
-     * @var \Magento\Framework\App\Request\Http $request
-     */
-    protected $request;
+    protected \Magento\Framework\App\Request\Http $request;
 
-    /**
-     * @var Magento\Customer\Model\Session $customerSession
-     */
-    protected $customerSession;
+    protected \Magento\Customer\Model\Session $customerSession;
 
-    /**
-     * @var \Magento\Customer\Model\Session\Proxy $sessionProxy
-     */
-    protected $sessionProxy;
+    protected \Magento\Sales\Model\Order\OrderCustomerExtractor $customerExtractor;
 
-    /**
-     * @var \Magento\Sales\Model\Order\OrderCustomerExtractor $customerExtractor
-     */
-    protected $customerExtractor;
+    protected \Magento\Customer\Model\Delegation\Storage $storage;
 
-    /**
-     * @var \MageSuite\SuccessPageRegistration\Helper\Configuration
-     */
-    protected $configurationHelper;
+    protected \MageSuite\SuccessPageRegistration\Helper\Configuration $configurationHelper;
 
-    /**
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     */
     public function __construct(
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Api\OrderAddressRepositoryInterface $orderAddressRepository,
         \Magento\Framework\App\Request\Http $request,
         \Magento\Customer\Model\Session $customerSession,
-        \Magento\Customer\Model\Session\Proxy $sessionProxy,
         \Magento\Sales\Model\Order\OrderCustomerExtractor $customerExtractor,
+        \Magento\Customer\Model\Delegation\Storage $storage,
         \MageSuite\SuccessPageRegistration\Helper\Configuration $configurationHelper
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->orderAddressRepository = $orderAddressRepository;
         $this->request = $request;
         $this->customerSession = $customerSession;
-        $this->sessionProxy = $sessionProxy;
         $this->customerExtractor = $customerExtractor;
+        $this->storage = $storage;
         $this->configurationHelper = $configurationHelper;
     }
 
     public function afterGetFormData(\Magento\Customer\Block\Form\Register $subject, $result)
     {
         $action = $this->request->getActionName();
-
         $lastOrderData = $this->checkoutSession->getLastRealOrder();
 
         if (!$lastOrderData || $action !== 'success') {
@@ -71,8 +47,8 @@ class AddUserDataToRegisterForm
         }
 
         $email = $lastOrderData->getCustomerEmail();
-
         $addressType = $this->configurationHelper->getAddressType();
+
         if ($addressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING) {
             $address = $this->orderAddressRepository->get($lastOrderData->getBillingAddressId());
         } else {
@@ -82,23 +58,8 @@ class AddUserDataToRegisterForm
         $subject->getData('form_data')->setEmail($email);
         $subject->getData('form_data')->setFirstname($address->getFirstname());
         $subject->getData('form_data')->setLastname($address->getLastname());
-
-        $customer = $this->customerExtractor->extract($lastOrderData->getId());
-
-        $customerData = $customer->__toArray();
-        $addressesData = [];
-        if ($customer->getAddresses()) {
-            /** @var Address $address */
-            foreach ($customer->getAddresses() as $address) {
-                $addressesData[] = $address->__toArray();
-            }
-        }
-
-        $this->sessionProxy->setDelegatedNewCustomerData([
-            'customer' => $customerData,
-            'addresses' => $addressesData,
-            'delegated_data' => ['__sales_assign_order_id' => $lastOrderData->getId()],
-        ]);
+        $customer = $this->customerExtractor->extract((int)$lastOrderData->getId());
+        $this->storage->storeNewOperation($customer, ['__sales_assign_order_id' => $lastOrderData->getId()]);
 
         return $result;
     }
