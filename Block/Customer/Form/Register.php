@@ -4,15 +4,9 @@ namespace MageSuite\SuccessPageRegistration\Block\Customer\Form;
 
 class Register extends \Magento\Customer\Block\Form\Register
 {
-    /**
-     * @var \Magento\Checkout\Model\Session
-     */
-    protected $checkoutSession;
-
-    /**
-     * @var \Magento\Customer\Model\CustomerFactory
-     */
-    protected $customerModelFactory;
+    protected \Magento\Checkout\Model\Session $checkoutSession;
+    protected \Magento\Customer\Model\CustomerFactory $customerModelFactory;
+    protected \Magento\Customer\Model\Registration $registration;
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -26,11 +20,13 @@ class Register extends \Magento\Customer\Block\Form\Register
         \Magento\Customer\Model\Url $customerUrl,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Customer\Model\CustomerFactory $customerModelFactory,
+        \Magento\Customer\Model\Registration $registration,
         array $data = [],
         \Magento\Newsletter\Model\Config $newsLetterConfig = null
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->customerModelFactory = $customerModelFactory;
+        $this->registration = $registration;
 
         // Compatibility with Magento >= 2.4.5,
         // For improved maintainability I don't want to introduce breaking compatibility version just for that ViewModel
@@ -57,6 +53,10 @@ class Register extends \Magento\Customer\Block\Form\Register
 
     protected function _toHtml()
     {
+        if (!$this->registration->isAllowed()) {
+            return '';
+        }
+
         if (!$this->_customerSession->isLoggedIn()) {
             $email = $this->checkoutSession->getLastRealOrder()->getCustomerEmail();
             if ($this->customerExists($email)) {
