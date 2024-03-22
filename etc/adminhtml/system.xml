@@ -18,7 +18,7 @@
         <section id="success_page" translate="label" type="text" sortOrder="400" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Success Page</label>
             <tab>magesuite</tab>
-            <resource>MageSuite_SuccessPageRegistration::configure_success_page</resource>
+            <resource>MageSuite_SuccessPageRegistration::configuration</resource>
             <group id="registration_form" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Registration Form</label>
                 <field id="enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
