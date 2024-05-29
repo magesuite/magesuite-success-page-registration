@@ -27,13 +27,20 @@ class Register extends \Magento\Customer\Block\Form\Register
         $this->checkoutSession = $checkoutSession;
         $this->customerModelFactory = $customerModelFactory;
         $this->registration = $registration;
-
-        // Compatibility with Magento >= 2.4.5,
+        // Compatibility with newest Magento
         // For improved maintainability I don't want to introduce breaking compatibility version just for that ViewModel
         //phpcs:disable
-        if (class_exists('Magento\Customer\ViewModel\CreateAccountButton')) {
-            $data['create_account_button_view_model'] = \Magento\Framework\App\ObjectManager::getInstance()
-                ->create('Magento\Customer\ViewModel\CreateAccountButton');
+        $backwardCompatibility = [
+            'create_account_button_view_model' => 'Magento\Customer\ViewModel\CreateAccountButton', // >= 2.4.5
+            'button_lock_manager' => 'Magento\Framework\View\Element\ButtonLockManager' // >= 2.4.7
+        ];
+
+        foreach ($backwardCompatibility as $key => $class) {
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $data[$key] = \Magento\Framework\App\ObjectManager::getInstance()->create($class);
         }
         //phpcs:enable
         parent::__construct(
