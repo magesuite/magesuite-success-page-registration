@@ -49,7 +49,7 @@ class AddUserDataToRegisterForm
         $email = $lastOrderData->getCustomerEmail();
         $addressType = $this->configurationHelper->getAddressType();
 
-        if ($addressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING) {
+        if ($addressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_BILLING || $lastOrderData->getIsVirtual()) {
             $address = $this->orderAddressRepository->get($lastOrderData->getBillingAddressId());
         } else {
             $address = $this->orderAddressRepository->get($lastOrderData->getShippingAddressId());
