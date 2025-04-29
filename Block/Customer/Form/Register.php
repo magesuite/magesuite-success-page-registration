@@ -22,7 +22,7 @@ class Register extends \Magento\Customer\Block\Form\Register
         \Magento\Customer\Model\CustomerFactory $customerModelFactory,
         \Magento\Customer\Model\Registration $registration,
         array $data = [],
-        \Magento\Newsletter\Model\Config $newsLetterConfig = null
+        ?\Magento\Newsletter\Model\Config $newsLetterConfig = null
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->customerModelFactory = $customerModelFactory;
