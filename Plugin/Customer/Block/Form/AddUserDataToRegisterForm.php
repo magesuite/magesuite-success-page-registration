@@ -28,10 +28,12 @@ class AddUserDataToRegisterForm
         $addressId = $lastOrderData->getBillingAddressId();
         $addressType = $this->configurationHelper->getAddressType();
 
-        if ($addressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_SHIPPING && !$lastOrderData->getIsVirtual()) {
+        if ($lastOrderData->getShippingMethod() === 'instore_pickup') {
+            $addressId = $lastOrderData->getBillingAddressId();
+        } elseif ($addressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_SHIPPING && !$lastOrderData->getIsVirtual()) {
             $addressId = $lastOrderData->getShippingAddressId();
         }
-
+        
         $address = $this->orderAddressRepository->get($addressId);
         $subject->getData('form_data')->setEmail($email);
         $subject->getData('form_data')->setFirstname($address->getFirstname());
