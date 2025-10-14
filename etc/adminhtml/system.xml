@@ -11,7 +11,7 @@
                     <label>Source address</label>
                     <source_model>MageSuite\SuccessPageRegistration\Model\Config\Source\AddressType</source_model>
                     <frontend_class>cs-csfeature__logo</frontend_class>
-                    <comment><![CDATA[Customer name from this address will be taken to create customer.<br/>When using store pickup - it is recommended to use Billing address.]]></comment>
+                    <comment><![CDATA[Customer name from this address will be taken to create customer.<br/>When in store pickup is used it is always billing address.]]></comment>
                 </field>
             </group>
         </section>
