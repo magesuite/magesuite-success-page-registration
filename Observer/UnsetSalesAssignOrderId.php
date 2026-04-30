@@ -10,7 +10,7 @@ class UnsetSalesAssignOrderId implements \Magento\Framework\Event\ObserverInterf
         protected \Magento\Customer\Model\Session $customerSession
     ) {}
 
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(\Magento\Framework\Event\Observer $observer): void
     {
         $delegatedNewCustomerData = $this->customerSession->getDelegatedNewCustomerData();
 
