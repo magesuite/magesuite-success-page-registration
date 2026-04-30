@@ -15,9 +15,8 @@ class UnsetSalesAssignOrderId implements \Magento\Framework\Event\ObserverInterf
         $delegatedNewCustomerData = $this->customerSession->getDelegatedNewCustomerData();
 
         if (isset($delegatedNewCustomerData['delegated_data']['__sales_assign_order_id'])) {
-            unset($delegatedNewCustomerData['delegated_data']['__sales_assign_order_id']);
+            $this->customerSession->setCustomerFormData(null);
+            $this->customerSession->setDelegatedNewCustomerData(null);
         }
-
-        $this->customerSession->setDelegatedNewCustomerData($delegatedNewCustomerData);
     }
 }
