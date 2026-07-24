@@ -33,7 +33,7 @@ class AddUserDataToRegisterForm
         } elseif ($addressType == \Magento\Customer\Model\Address\AbstractAddress::TYPE_SHIPPING && !$lastOrderData->getIsVirtual()) {
             $addressId = $lastOrderData->getShippingAddressId();
         }
-        
+
         $address = $this->orderAddressRepository->get($addressId);
         $subject->getData('form_data')->setEmail($email);
         $subject->getData('form_data')->setFirstname($address->getFirstname());
